@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>LidGuard</AssemblyName>
+    <RootNamespace>LidGuard.Production</RootNamespace>
+    <PublishDir>..\..\publish\LidGuard\</PublishDir>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj\**\*;bin\**\*</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\LidGuard\LidGuard.csproj" />
+  </ItemGroup>
+</Project>

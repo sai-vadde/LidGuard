@@ -1,0 +1,21 @@
+# Build outputs
+**/bin/
+**/obj/
+
+# Generated logs
+logs/
+**/logs/
+
+# Generated publish/release artifacts
+publish/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+
+# OS files
+Thumbs.db
+.DS_Store

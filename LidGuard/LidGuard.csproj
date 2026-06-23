@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>LidGuard.Core</AssemblyName>
+    <RootNamespace>LidGuard</RootNamespace>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj\**\*;bin\**\*;build-obj\**\*;build-bin\**\*</DefaultItemExcludes>
+  </PropertyGroup>
+
+</Project>

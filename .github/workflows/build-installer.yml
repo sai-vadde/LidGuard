@@ -1,0 +1,63 @@
+name: Build Installer
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-installer:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install Inno Setup
+        shell: powershell
+        run: choco install innosetup --no-progress -y
+
+      - name: Restore solution
+        run: dotnet restore .\LidGuard.sln
+
+      - name: Build solution
+        run: dotnet build .\LidGuard.sln -c Release --no-restore
+
+      - name: Compute version
+        id: version
+        shell: powershell
+        run: |
+          if ("${{ github.ref_type }}" -eq "tag") {
+            $value = "${{ github.ref_name }}".TrimStart("v")
+          }
+          else {
+            $value = "0.0.0-preview.${{ github.run_number }}"
+          }
+          "app_version=$value" >> $env:GITHUB_OUTPUT
+
+      - name: Build installer
+        shell: powershell
+        run: >
+          powershell -NoProfile -ExecutionPolicy Bypass
+          -File .\installer\Build-Installer.ps1
+          -Configuration Release
+          -Runtime win-x64
+          -AppVersion ${{ steps.version.outputs.app_version }}
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LidGuard-Setup
+          path: .\publish\installer\LidGuard-Setup.exe
+
+      - name: Publish GitHub release asset
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: .\publish\installer\LidGuard-Setup.exe

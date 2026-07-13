@@ -251,6 +251,18 @@ public sealed class LidListenerContext : ApplicationContext
                     $"External monitor state is {state}. Hibernation will be requested."
                 );
 
+                LidGuardSettings settings = SettingsManager.Load();
+
+                if (settings.RespectAgentHolds &&
+                    WakeIntentRegistry.HasActiveSuspendHold(out string? holdReason))
+                {
+                    AppLogger.LogLid(
+                        "Hibernation skipped: a cooperating product has an active " +
+                        $"keep-awake hold ({holdReason})."
+                    );
+                    return;
+                }
+
                 await Task.Yield();
                 HibernateManager.Hibernate();
             }
